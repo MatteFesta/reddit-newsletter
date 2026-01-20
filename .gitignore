@@ -1,0 +1,38 @@
+# ===========================
+# SECRETS - Never upload these!
+# ===========================
+.env
+*.env
+
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+.venv/
+
+# ===========================
+# IDE
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================
+# Output (optional - you may want to keep these)
+# ===========================
+# output/newsletters/

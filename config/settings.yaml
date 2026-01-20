@@ -1,0 +1,32 @@
+# =============================================================================
+# REDDIT NEWSLETTER - CONFIGURATION
+# =============================================================================
+# Edit this file to customize your newsletter. No code changes needed!
+
+# --- SUBREDDITS TO MONITOR ---
+# Add or remove subreddits here. The script will fetch top posts from each.
+subreddits:
+  - LocalLLaMA          # Open source AI models
+  - AI_Agents           # Autonomous AI agents
+  - PromptEngineering   # Prompt crafting techniques
+  - MachineLearning     # Academic/research ML
+  - technews            # General tech industry news
+
+# --- FETCH SETTINGS ---
+fetch:
+  posts_per_subreddit: 5          # How many posts to grab from each subreddit
+  time_period: week               # Options: hour, day, week, month, year, all
+  delay_between_requests: 1.0     # Seconds to wait between API calls (be polite!)
+  max_retries: 3                  # How many times to retry a failed request
+
+# --- NEWSLETTER SETTINGS ---
+newsletter:
+  stories_to_include: 5-7         # How many stories the AI should pick
+  output_directory: output/newsletters
+  output_filename: weekly_digest.md
+
+# --- EMAIL SETTINGS ---
+# Actual credentials are in .env file (never commit those!)
+email:
+  subject: "🚀 The Weekly Sync"
+  send_on_completion: true        # Set to false for dry runs

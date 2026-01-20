@@ -1,0 +1,58 @@
+# =============================================================================
+# GITHUB ACTIONS - WEEKLY NEWSLETTER AUTOMATION
+# =============================================================================
+# This workflow runs your newsletter script every Monday at 9:00 AM (Rome time).
+# It also allows manual triggering from the GitHub Actions tab.
+
+name: Weekly Newsletter
+
+on:
+  # Scheduled run: Every Monday at 8:00 AM UTC (= 9:00 AM Rome/CET)
+  # Note: GitHub uses UTC. Adjust if you switch to daylight saving (CEST = UTC+2)
+  schedule:
+    - cron: '0 8 * * 1'  # Minute Hour Day Month DayOfWeek (1 = Monday)
+  
+  # Manual trigger (click "Run workflow" button in GitHub Actions tab)
+  workflow_dispatch:
+
+jobs:
+  generate-newsletter:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Get the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Run the newsletter script
+      - name: Generate and send newsletter
+        env:
+          # These secrets must be set in your GitHub repo settings
+          # Go to: Settings > Secrets and variables > Actions > New repository secret
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python main.py --auto
+
+      # 5. (Optional) Upload the generated newsletter as an artifact
+      - name: Upload newsletter artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newsletter-${{ github.run_number }}
+          path: output/newsletters/
+          retention-days: 30
